@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.project.chinesepinyin.app-mergeDebugResources-58:/values-iw/values-iw.xml",
+            "outputFile": "com.project.chinesepinyin.app-mergeDebugResources-59:/values-iw/values-iw.xml",
             "map": [
                 {
                     "source": "C:\\Users\\조영준\\.gradle\\caches\\transforms-3\\70c98ca402cee29761dcbba4de5447e7\\transformed\\ui-release\\res\\values-iw\\values-iw.xml",

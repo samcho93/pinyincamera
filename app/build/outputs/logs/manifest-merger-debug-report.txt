@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:2:1-26:12
-INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:2:1-26:12
-INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:2:1-26:12
-INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:2:1-26:12
+ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:2:1-27:12
 MERGED from [androidx.camera:camera-video:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\283b0713334e7de7c683d5813e37f9b6\transformed\camera-video-1.3.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.camera:camera-view:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\3291d79ecaaf2381e44db3412068f2b9\transformed\camera-view-1.3.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.camera:camera-lifecycle:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\e9f6349aa11e1f666d6155cc1dfd817d\transformed\camera-lifecycle-1.3.1\AndroidManifest.xml:2:1-7:12
@@ -28,6 +28,7 @@ MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\조영준\.gradle\caches
 MERGED from [androidx.navigation:navigation-compose:2.5.1] C:\Users\조영준\.gradle\caches\transforms-3\4b226b41b82409dce2f9754d20c24dbc\transformed\navigation-compose-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.compose.animation:animation-core-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\e896acafbdb0d9091f01de1f5f55efbc\transformed\animation-core-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-icons-core-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\28a56eed4854978d7d1eb1cba687eb06\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-extended-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\dbeb287eb8f4f9fbf3d0b703d0e9e57e\transformed\material-icons-extended-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-ripple-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\7246f09bf245dfe0da29c1e700baacba\transformed\material-ripple-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.animation:animation-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\4a00e7a69ca0ba8238a76261a310fa54\transformed\animation-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\e05f2aa5493a086b74291db298b3cf1f\transformed\foundation-layout-release\AndroidManifest.xml:2:1-7:12
@@ -89,26 +90,26 @@ MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\조영준\.gradle\caches\t
 MERGED from [com.google.dagger:dagger-lint-aar:2.50] C:\Users\조영준\.gradle\caches\transforms-3\cb991af1a62ee82722c1334b00ce20d1\transformed\dagger-lint-aar-2.50\AndroidManifest.xml:16:1-19:12
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\조영준\.gradle\caches\transforms-3\cb321fce19d15140201449cacb1d5864\transformed\image-1.0.0-beta1\AndroidManifest.xml:2:1-9:12
 	package
-		INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml
+		INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml
+		INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml
 	android:versionCode
-		INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml
+		INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:2:11-69
 uses-feature#android.hardware.camera
-ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:4:5-84
+ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:4:5-84
 	android:required
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:4:58-81
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:4:58-81
 	android:name
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:4:19-57
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:4:19-57
 uses-permission#android.permission.CAMERA
-ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:5:5-65
+ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:5:5-65
 	android:name
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:5:22-62
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:5:22-62
 application
-ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:7:5-24:19
-INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:7:5-24:19
+ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:7:5-25:19
+INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:7:5-25:19
 MERGED from [androidx.camera:camera-camera2:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\b3e43e0d473d7107bd6ff462802370ed\transformed\camera-camera2-1.3.1\AndroidManifest.xml:23:5-34:19
 MERGED from [androidx.camera:camera-camera2:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\b3e43e0d473d7107bd6ff462802370ed\transformed\camera-camera2-1.3.1\AndroidManifest.xml:23:5-34:19
 MERGED from [androidx.camera:camera-core:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\28182947744887f19a289f2503be7553\transformed\camera-core-1.3.1\AndroidManifest.xml:23:5-34:19
@@ -144,43 +145,45 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\조영준\.gradle\
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\조영준\.gradle\caches\transforms-3\cb321fce19d15140201449cacb1d5864\transformed\image-1.0.0-beta1\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\조영준\.gradle\caches\transforms-3\cb321fce19d15140201449cacb1d5864\transformed\image-1.0.0-beta1\AndroidManifest.xml:7:5-20
 	android:extractNativeLibs
-		INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml
+		INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\조영준\.gradle\caches\transforms-3\69c6f3daedb7ac809cfc0511e66258ad\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:12:9-35
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:13:9-35
 	android:label
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:11:9-41
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:12:9-41
+	android:roundIcon
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:11:9-48
 	android:icon
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:10:9-43
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:10:9-43
 	android:allowBackup
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:9:9-35
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:9:9-35
 	android:theme
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:13:9-57
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:14:9-57
 	android:name
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:8:9-41
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:8:9-41
 activity#com.project.chinesepinyin.MainActivity
-ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:15:9-23:20
+ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:16:9-24:20
 	android:screenOrientation
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:18:13-49
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:19:13-51
 	android:exported
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:17:13-36
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:18:13-36
 	android:name
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:16:13-41
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:17:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:19:13-22:29
+ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:20:13-23:29
 action#android.intent.action.MAIN
-ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:20:17-69
+ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:21:17-69
 	android:name
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:20:25-66
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:21:25-66
 category#android.intent.category.LAUNCHER
-ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:21:17-77
+ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:22:17-77
 	android:name
-		ADDED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml:21:27-74
+		ADDED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml:22:27-74
 uses-sdk
-INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml
-INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml
+INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml
+INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml
 MERGED from [androidx.camera:camera-video:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\283b0713334e7de7c683d5813e37f9b6\transformed\camera-video-1.3.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.camera:camera-video:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\283b0713334e7de7c683d5813e37f9b6\transformed\camera-video-1.3.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.camera:camera-view:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\3291d79ecaaf2381e44db3412068f2b9\transformed\camera-view-1.3.1\AndroidManifest.xml:5:5-44
@@ -229,6 +232,8 @@ MERGED from [androidx.compose.animation:animation-core-android:1.6.0] C:\Users\�
 MERGED from [androidx.compose.animation:animation-core-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\e896acafbdb0d9091f01de1f5f55efbc\transformed\animation-core-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\28a56eed4854978d7d1eb1cba687eb06\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\28a56eed4854978d7d1eb1cba687eb06\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\dbeb287eb8f4f9fbf3d0b703d0e9e57e\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\dbeb287eb8f4f9fbf3d0b703d0e9e57e\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-ripple-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\7246f09bf245dfe0da29c1e700baacba\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-ripple-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\7246f09bf245dfe0da29c1e700baacba\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.animation:animation-android:1.6.0] C:\Users\조영준\.gradle\caches\transforms-3\4a00e7a69ca0ba8238a76261a310fa54\transformed\animation-release\AndroidManifest.xml:5:5-44
@@ -350,9 +355,9 @@ MERGED from [com.google.dagger:dagger-lint-aar:2.50] C:\Users\조영준\.gradle\
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\조영준\.gradle\caches\transforms-3\cb321fce19d15140201449cacb1d5864\transformed\image-1.0.0-beta1\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\조영준\.gradle\caches\transforms-3\cb321fce19d15140201449cacb1d5864\transformed\image-1.0.0-beta1\AndroidManifest.xml:5:5-44
 	android:targetSdkVersion
-		INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml
+		INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from E:\ClaudeRemote\projects\mobile\android\mobile_20260319_171633\app\src\main\AndroidManifest.xml
+		INJECTED from E:\ClaudeRemote\projects\mobile\android\pinyincamera\app\src\main\AndroidManifest.xml
 service#androidx.camera.core.impl.MetadataHolderService
 ADDED from [androidx.camera:camera-camera2:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\b3e43e0d473d7107bd6ff462802370ed\transformed\camera-camera2-1.3.1\AndroidManifest.xml:24:9-33:19
 MERGED from [androidx.camera:camera-core:1.3.1] C:\Users\조영준\.gradle\caches\transforms-3\28182947744887f19a289f2503be7553\transformed\camera-core-1.3.1\AndroidManifest.xml:29:9-33:78

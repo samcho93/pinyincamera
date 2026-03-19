@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.project.chinesepinyin.app-mergeDebugResources-58:/values-b+sr+Latn/values-b+sr+Latn.xml",
+            "outputFile": "com.project.chinesepinyin.app-mergeDebugResources-59:/values-b+sr+Latn/values-b+sr+Latn.xml",
             "map": [
                 {
                     "source": "C:\\Users\\조영준\\.gradle\\caches\\transforms-3\\e31fdc8759792a83d7fe0791d06f4471\\transformed\\play-services-base-18.1.0\\res\\values-b+sr+Latn\\values.xml",

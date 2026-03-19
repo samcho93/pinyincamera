@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.project.chinesepinyin.app-mergeDebugResources-58:/values-kn/values-kn.xml",
+            "outputFile": "com.project.chinesepinyin.app-mergeDebugResources-59:/values-kn/values-kn.xml",
             "map": [
                 {
                     "source": "C:\\Users\\조영준\\.gradle\\caches\\transforms-3\\69c6f3daedb7ac809cfc0511e66258ad\\transformed\\core-1.12.0\\res\\values-kn\\values-kn.xml",

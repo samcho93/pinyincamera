@@ -16,10 +16,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -42,6 +49,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognizer
+import com.project.chinesepinyin.ui.components.HelpDialog
 import com.project.chinesepinyin.ui.components.PinyinOverlay
 import com.project.chinesepinyin.ui.viewmodel.CameraViewModel
 import java.util.concurrent.Executors
@@ -53,6 +61,7 @@ fun CameraScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var hasCameraPermission by remember { mutableStateOf(false) }
+    var showHelpDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -160,6 +169,29 @@ fun CameraScreen(
                 .align(Alignment.BottomCenter)
                 .padding(16.dp)
         )
+
+        // Help button at top-right
+        IconButton(
+            onClick = { showHelpDialog = true },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
+                .size(40.dp),
+            colors = IconButtonDefaults.iconButtonColors(
+                containerColor = Color.Black.copy(alpha = 0.5f),
+                contentColor = Color.White
+            )
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.HelpOutline,
+                contentDescription = "도움말"
+            )
+        }
+
+        // Help dialog
+        if (showHelpDialog) {
+            HelpDialog(onDismiss = { showHelpDialog = false })
+        }
     }
 }
 

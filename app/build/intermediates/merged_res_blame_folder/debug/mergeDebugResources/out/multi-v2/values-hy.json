@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.project.chinesepinyin.app-mergeDebugResources-58:/values-hy/values-hy.xml",
+            "outputFile": "com.project.chinesepinyin.app-mergeDebugResources-59:/values-hy/values-hy.xml",
             "map": [
                 {
                     "source": "C:\\Users\\조영준\\.gradle\\caches\\transforms-3\\cd1a9c3112f14f220e2502a26491d1cd\\transformed\\material3-1.1.2\\res\\values-hy\\values-hy.xml",

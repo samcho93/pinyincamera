@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo \"exit: $?\")",
+      "Bash(./gradlew assembleDebug)",
+      "Bash(ls E:/ClaudeRemote/projects/mobile/android/pinyincamera/gradlew*)",
+      "Bash(ls E:/ClaudeRemote/projects/mobile/android/pinyincamera/*.bat)",
+      "Bash(gradle wrapper:*)"
+    ]
+  }
+}
