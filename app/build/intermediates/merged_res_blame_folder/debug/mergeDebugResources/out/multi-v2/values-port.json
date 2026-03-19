@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.project.chinesepinyin.app-mergeDebugResources-58:/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\조영준\\.gradle\\caches\\transforms-3\\9d69a371fbf190e0f11ad2243e06d02e\\transformed\\appcompat-1.1.0\\res\\values-port\\values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}

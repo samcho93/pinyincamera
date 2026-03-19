@@ -1,0 +1,13 @@
+R_DEF: Internal format may change without notice
+local
+color ic_launcher_background
+color tone1_red
+color tone2_green
+color tone3_blue
+color tone4_purple
+color tone5_neutral
+mipmap ic_launcher
+mipmap ic_launcher_foreground
+mipmap ic_launcher_round
+string app_name
+style Theme.ChinesePinyinCamera
