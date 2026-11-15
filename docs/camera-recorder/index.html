@@ -15,9 +15,9 @@
 <style>
   :root { --bg:#0b0b0f; --fg:#f2f2f5; --muted:#8b8b99; --red:#ff3b30; --acc:#3b82f6; --card:#17171d; }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+  html,body { margin:0; height:100%; height:100dvh; background:var(--bg); color:var(--fg);
     font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif; overscroll-behavior:none; }
-  #app { display:flex; flex-direction:column; height:100%; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+  #app { display:flex; flex-direction:column; height:100%; height:100dvh; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
 
   /* 프리뷰 */
   #stage { position:relative; flex:1; min-height:0; background:#000; overflow:hidden; }
@@ -348,8 +348,14 @@
       clearTimeout(hintTimer); hintTimer = setTimeout(() => cover.classList.remove('showhint'), 3000);
       // 전체화면 시도 (주소창 제거)
       document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(()=>{});
-    } else if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+    } else {
+      const done = () => { setMini(false); window.scrollTo(0, 0); window.dispatchEvent(new Event('resize')); };
+      if (document.fullscreenElement) document.exitFullscreen().catch(()=>{}).finally(() => setTimeout(done, 100));
+      else done();
+    }
   }
+  // 전체화면을 시스템 제스처로 빠져나온 경우에도 배치 복원
+  document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) { window.scrollTo(0, 0); if (!cover.classList.contains('on')) setMini(false); } });
   cover.addEventListener('pointerup', () => {
     const now = Date.now();
     if (now - lastTap < 400) { showCover(false); lastTap = 0; }
@@ -357,7 +363,11 @@
   });
 
   // ---------- 최소화 (플로팅 썸네일) ----------
-  function setMini(on) { document.body.classList.toggle('mini', on); $('miniBtn').textContent = on ? '🗖 확대' : '🗗 최소화'; }
+  function setMini(on) {
+    document.body.classList.toggle('mini', on);
+    if (!on) { const st = $('stage'); st.style.left = st.style.top = st.style.right = ''; }   // 드래그로 남은 좌표 초기화 (복귀 시 배치 틀어짐 방지)
+    $('miniBtn').textContent = on ? '🗖 확대' : '🗗 최소화';
+  }
   // 최소화: 웹앱은 스스로 홈 화면으로 나갈 수 없으므로 PiP 창을 띄운 뒤 홈으로 나가도록 안내
   async function enterPiP() {
     try {
