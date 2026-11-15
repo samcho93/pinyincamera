@@ -31,8 +31,10 @@
   #msg { position:absolute; left:12px; right:12px; bottom:12px; background:rgba(0,0,0,.7); padding:10px 14px; border-radius:12px; font-size:13px; line-height:1.4; display:none; }
 
   /* 최소화(플로팅) 모드 */
-  body.mini #stage { position:fixed; width:120px; height:160px; right:12px; top:calc(12px + env(safe-area-inset-top));
-    z-index:50; border-radius:14px; box-shadow:0 4px 20px rgba(0,0,0,.6); touch-action:none; }
+  body.mini #stage { position:fixed; width:64px; height:64px; flex:none; right:12px; top:calc(12px + env(safe-area-inset-top));
+    z-index:50; border-radius:16px; box-shadow:0 2px 12px rgba(0,0,0,.7); border:2px solid var(--red); touch-action:none; }
+  body.mini #preview { object-fit:cover; }
+  body.mini #startBtn { display:none !important; }
   body.mini #hud, body.mini #msg { display:none; }
   body.mini #app { background:var(--bg); }
   body.mini #controls { flex:1; }
