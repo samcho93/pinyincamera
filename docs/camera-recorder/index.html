@@ -110,7 +110,7 @@
       <button id="recBtn" aria-label="녹화"></button>
       <div style="display:flex;flex-direction:column;gap:6px">
         <button class="btn small" id="hideBtn" disabled>🌑 화면 숨기기</button>
-        <button class="btn small" id="miniBtn" disabled>🗗 최소화</button>
+        <button class="btn small" id="miniBtn" disabled>🗗 최소화(PiP)</button>
       </div>
     </div>
     <div class="row" style="margin-top:8px">
@@ -358,7 +358,22 @@
 
   // ---------- 최소화 (플로팅 썸네일) ----------
   function setMini(on) { document.body.classList.toggle('mini', on); $('miniBtn').textContent = on ? '🗖 확대' : '🗗 최소화'; }
-  $('miniBtn').onclick = () => setMini(!document.body.classList.contains('mini'));
+  // 최소화: 웹앱은 스스로 홈 화면으로 나갈 수 없으므로 PiP 창을 띄운 뒤 홈으로 나가도록 안내
+  async function enterPiP() {
+    try {
+      if (document.pictureInPictureEnabled && !document.pictureInPictureElement) { await video.requestPictureInPicture(); return true; }
+      if (video.webkitSupportsPresentationMode && video.webkitSupportsPresentationMode('picture-in-picture')) { video.webkitSetPresentationMode('picture-in-picture'); return true; }
+    } catch (e) {}
+    return false;
+  }
+  $('miniBtn').onclick = async () => {
+    if (document.body.classList.contains('mini')) return setMini(false);
+    if (document.pictureInPictureElement) { await document.exitPictureInPicture().catch(()=>{}); return; }
+    if (await enterPiP()) msg('작은 창으로 전환했습니다. 이제 홈 버튼(또는 홈 제스처)으로 바탕화면에 나가세요. 녹화는 계속됩니다.', 6000);
+    else { setMini(true); msg('이 브라우저는 작은 창(PiP)을 지원하지 않아 앱 안에서 아이콘으로 줄였습니다.', 5000); }
+  };
+  // 지원 브라우저(Chrome Android 등): 앱을 나가면 자동으로 PiP 진입
+  try { navigator.mediaSession && navigator.mediaSession.setActionHandler('enterpictureinpicture', () => { enterPiP(); }); } catch (e) {}
   // 썸네일 드래그 이동, 탭하면 복원
   (() => {
     const st = $('stage'); let sx, sy, ox, oy, moved = false, drag = false;
