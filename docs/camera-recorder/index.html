@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<title>카메라 녹화</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="카메라녹화">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+  :root { --bg:#0b0b0f; --fg:#f2f2f5; --muted:#8b8b99; --red:#ff3b30; --acc:#3b82f6; --card:#17171d; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif; overscroll-behavior:none; }
+  #app { display:flex; flex-direction:column; height:100%; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+
+  /* 프리뷰 */
+  #stage { position:relative; flex:1; min-height:0; background:#000; overflow:hidden; }
+  #preview { width:100%; height:100%; object-fit:contain; background:#000; }
+  #preview.mirror { transform:scaleX(-1); }
+  #hud { position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
+  .pill { background:rgba(0,0,0,.55); padding:6px 12px; border-radius:20px; font-size:14px; font-variant-numeric:tabular-nums; display:flex; align-items:center; gap:6px; }
+  .dot { width:10px; height:10px; border-radius:50%; background:var(--red); display:none; }
+  .rec .dot { display:inline-block; animation:blink 1s infinite; }
+  @keyframes blink { 50% { opacity:.2; } }
+  #msg { position:absolute; left:12px; right:12px; bottom:12px; background:rgba(0,0,0,.7); padding:10px 14px; border-radius:12px; font-size:13px; line-height:1.4; display:none; }
+
+  /* 최소화(플로팅) 모드 */
+  body.mini #stage { position:fixed; width:120px; height:160px; right:12px; top:calc(12px + env(safe-area-inset-top));
+    z-index:50; border-radius:14px; box-shadow:0 4px 20px rgba(0,0,0,.6); touch-action:none; }
+  body.mini #hud, body.mini #msg { display:none; }
+  body.mini #app { background:var(--bg); }
+  body.mini #controls { flex:1; }
+
+  /* 컨트롤 */
+  #controls { padding:14px 16px 18px; background:var(--bg); }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .btn { background:var(--card); color:var(--fg); border:0; border-radius:14px; padding:12px 14px; font-size:14px; min-width:64px; }
+  .btn:disabled { opacity:.35; }
+  .btn.small { padding:8px 10px; font-size:13px; }
+  #recBtn { width:76px; height:76px; border-radius:50%; border:4px solid #fff; background:transparent; position:relative; padding:0; }
+  #recBtn::after { content:""; position:absolute; inset:6px; background:var(--red); border-radius:50%; transition:.15s; }
+  .rec #recBtn::after { inset:20px; border-radius:8px; }
+  .opts { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+  select { background:var(--card); color:var(--fg); border:0; border-radius:10px; padding:8px 10px; font-size:13px; }
+  label.chk { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:6px; }
+
+  /* 녹화 목록 */
+  #list { margin-top:12px; max-height:22vh; overflow:auto; }
+  .item { display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--card); padding:10px 12px; border-radius:12px; margin-bottom:8px; font-size:13px; }
+  .item small { color:var(--muted); display:block; }
+  .item a, .item button { color:var(--acc); background:none; border:0; font-size:13px; text-decoration:none; padding:6px; }
+
+  /* 권한 안내 */
+  #perm { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; padding:20px; }
+  #perm.on { display:flex; }
+  #perm .box { background:var(--card); border-radius:18px; padding:20px; max-width:380px; width:100%; max-height:90vh; overflow:auto; }
+  #perm h2 { margin:0 0 10px; font-size:18px; }
+  #perm p, #perm li { font-size:14px; line-height:1.55; color:#d6d6de; }
+  #perm ol { padding-left:20px; margin:8px 0 14px; }
+  .st { display:flex; justify-content:space-between; font-size:14px; padding:6px 0; border-bottom:1px solid #26262e; }
+  .st b.ok { color:#34c759; } .st b.no { color:var(--red); } .st b.ask { color:#ffcc00; }
+  #perm .btns { display:flex; gap:8px; margin-top:14px; }
+  #perm .btns .btn { flex:1; }
+  #perm .btn.pri { background:var(--acc); }
+
+  /* 숨김(블랙) 오버레이 */
+  #cover { position:fixed; inset:0; background:#000; z-index:100; display:none; align-items:center; justify-content:center; flex-direction:column; color:#222; user-select:none; -webkit-user-select:none; }
+  #cover.on { display:flex; }
+  #cover .tiny { width:8px; height:8px; border-radius:50%; background:#3a0a08; animation:blink 2s infinite; position:absolute; top:calc(14px + env(safe-area-inset-top)); right:14px; }
+  #cover .hint { font-size:12px; color:#1c1c1c; position:absolute; bottom:calc(24px + env(safe-area-inset-bottom)); }
+  #cover.showhint .hint { color:#777; }
+  #cover.showhint .tiny { background:var(--red); }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <video id="preview" autoplay playsinline muted></video>
+    <div id="hud">
+      <div class="pill" id="timerPill"><span class="dot"></span><span id="timer">00:00</span></div>
+      <div class="pill" id="infoPill">후면</div>
+    </div>
+    <div id="msg"></div>
+    <button class="btn" id="startBtn" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:16px;padding:16px 22px;display:none">📷 카메라 켜기</button>
+  </div>
+
+  <div id="controls">
+    <div class="opts">
+      <select id="quality">
+        <option value="720">HD 720p</option>
+        <option value="1080">FHD 1080p</option>
+        <option value="480">SD 480p</option>
+      </select>
+      <label class="chk"><input type="checkbox" id="audio" checked> 소리 녹음</label>
+      <label class="chk"><input type="checkbox" id="keepAwake" checked> 화면 꺼짐 방지</label>
+    </div>
+
+    <div class="row">
+      <button class="btn" id="flipBtn">🔄 전환</button>
+      <button id="recBtn" aria-label="녹화"></button>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <button class="btn small" id="hideBtn" disabled>🌑 화면 숨기기</button>
+        <button class="btn small" id="miniBtn" disabled>🗗 최소화</button>
+      </div>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn small" id="pipBtn" style="display:none">PiP 창</button>
+      <button class="btn small" id="installBtn" style="display:none">📲 앱 설치</button>
+    </div>
+
+    <div id="list"></div>
+  </div>
+</div>
+
+<div id="perm">
+  <div class="box">
+    <h2 id="permTitle">카메라 권한이 필요합니다</h2>
+    <div class="st"><span>📷 카메라</span><b id="stCam" class="ask">확인 중</b></div>
+    <div class="st"><span>🎤 마이크</span><b id="stMic" class="ask">확인 중</b></div>
+    <p id="permReason" style="margin-top:12px"></p>
+    <p id="permDiag" style="font-size:12px;color:#8b8b99"></p>
+    <ol id="permSteps"></ol>
+    <div class="btns">
+      <button class="btn" id="permClose">닫기</button>
+      <button class="btn pri" id="permRetry">다시 시도</button>
+    </div>
+  </div>
+</div>
+
+<div id="cover">
+  <div class="tiny"></div>
+  <div class="hint">녹화 중 · 화면을 두 번 탭하면 복귀</div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const video = $('preview'), app = $('app');
+  let facing = 'environment';   // 'user' = 전면, 'environment' = 후면
+  let stream = null, recorder = null, chunks = [], startedAt = 0, tick = null, wakeLock = null;
+  let recording = false;
+  const recs = [];
+
+  const fmt = s => String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
+  function msg(t, ms=4000) {
+    const m = $('msg'); m.textContent = t; m.style.display = t ? 'block' : 'none';
+    if (t && ms) setTimeout(() => { if (m.textContent === t) m.style.display = 'none'; }, ms);
+  }
+  function pickMime() {
+    const c = ['video/mp4;codecs=avc1,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+    return c.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || '';
+  }
+
+  // ---------- 카메라 ----------
+  let hangTimer;
+  async function startCamera() {
+    stopCamera();
+    $('startBtn').style.display = 'none';
+    clearTimeout(hangTimer);
+    hangTimer = setTimeout(() => { if (!stream) showPerm('pending'); }, 6000);
+    const h = parseInt($('quality').value, 10);
+    const constraints = {
+      video: { facingMode: { ideal: facing }, height: { ideal: h }, width: { ideal: Math.round(h*16/9) } },
+      audio: $('audio').checked ? { echoCancellation:true, noiseSuppression:true } : false
+    };
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(constraints);
+    } catch (e) {
+      // 오디오 권한 거부 시 영상만 재시도
+      if (constraints.audio) {
+        try { constraints.audio = false; stream = await navigator.mediaDevices.getUserMedia(constraints); $('audio').checked = false; msg('마이크를 사용할 수 없어 영상만 녹화합니다.'); }
+        catch (e2) { return fail(e2); }
+      } else return fail(e);
+    }
+    clearTimeout(hangTimer); $('perm').classList.remove('on');
+    video.srcObject = stream;
+    const s = stream.getVideoTracks()[0].getSettings();
+    const actual = s.facingMode || facing;
+    facing = actual === 'user' ? 'user' : 'environment';
+    video.classList.toggle('mirror', facing === 'user');
+    $('infoPill').textContent = (facing === 'user' ? '전면' : '후면') + (s.height ? ` · ${s.height}p` : '');
+    stream.getVideoTracks()[0].addEventListener('ended', onTrackEnded);
+  }
+  function stopCamera() {
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    stream = null;
+  }
+  function fail(e) {
+    clearTimeout(hangTimer); $('startBtn').style.display = 'block'; lastErr = e.name + (e.message ? ': ' + e.message : '');
+    if (e.name === 'NotAllowedError' || e.name === 'SecurityError') showPerm('denied');
+    else if (e.name === 'NotFoundError' || e.name === 'OverconstrainedError') msg('사용 가능한 카메라를 찾을 수 없습니다. (' + e.name + ')', 0);
+    else if (e.name === 'NotReadableError') msg('카메라가 다른 앱에서 사용 중입니다. 다른 앱을 종료하고 다시 시도해주세요.', 0);
+    else msg('카메라를 열 수 없습니다: ' + e.message, 0);
+  }
+
+  // ---------- 권한 안내 ----------
+  let lastErr = "";
+  const ua = navigator.userAgent;
+  const inApp = /KAKAOTALK|NAVER\(|Instagram|FBAN|FBAV|Line\/|DaumApps|; wv\)/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/.test(ua);
+  const stText = { granted:['허용됨','ok'], denied:['차단됨','no'], prompt:['요청 전','ask'], unknown:['알 수 없음','ask'] };
+  async function queryPerm(name) {
+    try { return (await navigator.permissions.query({ name })).state; } catch { return 'unknown'; }
+  }
+  async function refreshPermStatus() {
+    for (const [name, id] of [['camera','stCam'], ['microphone','stMic']]) {
+      const s = await queryPerm(name), el = $(id), [t, c] = stText[s] || stText.unknown;
+      el.textContent = t; el.className = c;
+    }
+  }
+  async function showPerm(kind) {
+    const steps = $('permSteps');
+    let list;
+    $('permDiag').textContent = `진단: ${location.protocol}//${location.host} · secure=${window.isSecureContext} · ${lastErr || '오류 없음'}`;
+    if (inApp) {
+      $('permTitle').textContent = '앱 내장 브라우저에서는 카메라가 막힙니다';
+      $('permReason').textContent = '카카오톡/네이버 등 앱 안에서 연 링크는 카메라 권한 창이 뜨지 않습니다.';
+      list = ['우측 상단 메뉴(⋮ 또는 ⋯) 누르기', '"다른 브라우저로 열기" 또는 "Safari/Chrome에서 열기" 선택'];
+    } else if (kind === 'pending') {
+      $('permTitle').textContent = '권한 요청이 보이지 않나요?';
+      $('permReason').textContent = '브라우저가 권한 창을 띄우지 못한 상태입니다. 아래를 확인한 뒤 "다시 시도"를 눌러주세요.';
+      list = ['주소가 https:// 인지 확인 (파일을 직접 열었거나 http면 안 됩니다)', '"카메라 켜기" 버튼을 직접 눌러 요청 창 띄우기', '이전에 차단했다면 주소창 자물쇠 → 권한에서 카메라·마이크 "허용"', 'Chrome(Android) / Safari(iOS) 기본 브라우저에서 열기'];
+    } else if (!window.isSecureContext) {
+      $('permTitle').textContent = '보안 연결(HTTPS)이 필요합니다';
+      $('permReason').textContent = '카메라는 https:// 주소에서만 사용할 수 있습니다. 주소를 확인해주세요.';
+      list = ['주소창이 https:// 로 시작하는지 확인', 'http 로 접속 중이라면 HTTPS 호스팅(GitHub Pages, Cloudflare 등)으로 접속'];
+    } else {
+      $('permTitle').textContent = kind === 'denied' ? '카메라 권한이 차단되었습니다' : '카메라 권한 안내';
+      $('permReason').textContent = kind === 'denied'
+        ? '브라우저에서 카메라 또는 마이크 사용이 거부되어 있습니다. 아래 순서로 허용한 뒤 "다시 시도"를 눌러주세요.'
+        : '녹화를 위해 카메라(및 마이크) 권한이 필요합니다. 요청 창이 뜨면 "허용"을 눌러주세요.';
+      list = isIOS
+        ? ['주소창 왼쪽 <b>aA</b> 버튼 누르기', '<b>웹사이트 설정</b> 선택', '<b>카메라</b>, <b>마이크</b>를 "허용"으로 변경', '이 화면에서 "다시 시도" (안 되면 페이지 새로고침)',
+           '전체 초기화: 설정 앱 → Safari → 카메라/마이크 → "허용" 또는 "확인"']
+        : isAndroid
+        ? ['주소창 왼쪽 <b>자물쇠(설정) 아이콘</b> 누르기', '<b>권한</b> 선택', '<b>카메라</b>, <b>마이크</b>를 "허용"으로 변경', '이 화면에서 "다시 시도" (안 되면 페이지 새로고침)',
+           '삼성 인터넷: 주소창 옆 메뉴 → 사이트 권한에서 변경']
+        : ['주소창 왼쪽 자물쇠(설정) 아이콘 클릭', '카메라/마이크를 "허용"으로 변경', '"다시 시도" 또는 페이지 새로고침'];
+    }
+    steps.innerHTML = list.map(x => `<li>${x}</li>`).join('');
+    $('perm').classList.add('on');
+    refreshPermStatus();
+  }
+  $('permClose').onclick = () => $('perm').classList.remove('on');
+  $('permRetry').onclick = async () => { $('perm').classList.remove('on'); msg(''); await startCamera(); };
+  // 설정에서 권한이 바뀌면 자동 갱신
+  ['camera','microphone'].forEach(n => {
+    try { navigator.permissions.query({ name:n }).then(p => p.onchange = () => { if ($('perm').classList.contains('on')) refreshPermStatus(); }); } catch {}
+  });
+  function onTrackEnded() {
+    if (recording) { msg('카메라가 중단되어 녹화를 저장했습니다. (앱이 백그라운드로 가면 브라우저가 카메라를 끕니다)', 0); stopRecording(); }
+  }
+
+  // ---------- 녹화 ----------
+  async function startRecording() {
+    if (!stream) await startCamera();
+    if (!stream) return;
+    if (!window.MediaRecorder) return msg('이 브라우저는 녹화를 지원하지 않습니다.', 0);
+    chunks = [];
+    const mime = pickMime();
+    try { recorder = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 4_000_000 } : undefined); }
+    catch (e) { return msg('녹화 시작 실패: ' + e.message, 0); }
+    recorder.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    recorder.onstop = saveRecording;
+    recorder.start(1000);
+    recording = true; startedAt = Date.now();
+    document.body.classList.add('rec'); app.classList.add('rec');
+    $('flipBtn').disabled = true; $('quality').disabled = true; $('audio').disabled = true;
+    $('hideBtn').disabled = false; $('miniBtn').disabled = false;
+    tick = setInterval(() => $('timer').textContent = fmt(Math.floor((Date.now()-startedAt)/1000)), 250);
+    if ($('keepAwake').checked) requestWake();
+  }
+  function stopRecording() {
+    if (!recording) return;
+    recording = false;
+    try { recorder.state !== 'inactive' && recorder.stop(); } catch {}
+    clearInterval(tick);
+    document.body.classList.remove('rec'); app.classList.remove('rec');
+    $('flipBtn').disabled = false; $('quality').disabled = false; $('audio').disabled = false;
+    $('hideBtn').disabled = true; $('miniBtn').disabled = true;
+    showCover(false); setMini(false); releaseWake();
+    // 트랙이 끊겼다면 프리뷰 재시작
+    if (!stream || stream.getVideoTracks()[0].readyState !== 'live') startCamera();
+  }
+  function saveRecording() {
+    if (!chunks.length) return;
+    const type = recorder.mimeType || 'video/webm';
+    const blob = new Blob(chunks, { type });
+    const ext = type.includes('mp4') ? 'mp4' : 'webm';
+    const url = URL.createObjectURL(blob);
+    const d = new Date(), p = n => String(n).padStart(2,'0');
+    const name = `rec_${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}.${ext}`;
+    recs.unshift({ name, url, blob, sec: Math.floor((Date.now()-startedAt)/1000) });
+    renderList();
+    $('timer').textContent = '00:00';
+  }
+  function renderList() {
+    const el = $('list'); el.innerHTML = '';
+    recs.forEach(r => {
+      const div = document.createElement('div'); div.className = 'item';
+      div.innerHTML = `<div>${r.name}<small>${fmt(r.sec)} · ${(r.blob.size/1048576).toFixed(1)}MB</small></div>`;
+      const box = document.createElement('div');
+      const play = document.createElement('button'); play.textContent = '재생';
+      play.onclick = () => window.open(r.url, '_blank');
+      const a = document.createElement('a'); a.href = r.url; a.download = r.name; a.textContent = '저장';
+      box.append(play, a);
+      if (navigator.canShare && navigator.canShare({ files: [new File([r.blob], r.name, { type: r.blob.type })] })) {
+        const sh = document.createElement('button'); sh.textContent = '공유';
+        sh.onclick = () => navigator.share({ files: [new File([r.blob], r.name, { type: r.blob.type })] }).catch(()=>{});
+        box.append(sh);
+      }
+      div.append(box); el.append(div);
+    });
+  }
+
+  // ---------- 화면 꺼짐 방지 ----------
+  async function requestWake() {
+    try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch {}
+  }
+  function releaseWake() { try { wakeLock && wakeLock.release(); } catch {} wakeLock = null; }
+
+  // ---------- 숨기기 (블랙 오버레이) ----------
+  const cover = $('cover');
+  let lastTap = 0, hintTimer;
+  function showCover(on) {
+    cover.classList.toggle('on', on);
+    if (on) {
+      setMini(false);
+      cover.classList.add('showhint');
+      clearTimeout(hintTimer); hintTimer = setTimeout(() => cover.classList.remove('showhint'), 3000);
+      // 전체화면 시도 (주소창 제거)
+      document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(()=>{});
+    } else if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+  }
+  cover.addEventListener('pointerup', () => {
+    const now = Date.now();
+    if (now - lastTap < 400) { showCover(false); lastTap = 0; }
+    else { lastTap = now; cover.classList.add('showhint'); clearTimeout(hintTimer); hintTimer = setTimeout(() => cover.classList.remove('showhint'), 2000); }
+  });
+
+  // ---------- 최소화 (플로팅 썸네일) ----------
+  function setMini(on) { document.body.classList.toggle('mini', on); $('miniBtn').textContent = on ? '🗖 확대' : '🗗 최소화'; }
+  $('miniBtn').onclick = () => setMini(!document.body.classList.contains('mini'));
+  // 썸네일 드래그 이동, 탭하면 복원
+  (() => {
+    const st = $('stage'); let sx, sy, ox, oy, moved = false, drag = false;
+    st.addEventListener('pointerdown', e => {
+      if (!document.body.classList.contains('mini')) return;
+      drag = true; moved = false; sx = e.clientX; sy = e.clientY;
+      const r = st.getBoundingClientRect(); ox = r.left; oy = r.top; st.setPointerCapture(e.pointerId);
+    });
+    st.addEventListener('pointermove', e => {
+      if (!drag) return;
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) + Math.abs(dy) > 6) moved = true;
+      st.style.left = (ox + dx) + 'px'; st.style.top = (oy + dy) + 'px'; st.style.right = 'auto';
+    });
+    st.addEventListener('pointerup', () => {
+      if (drag && !moved) setMini(false);
+      drag = false;
+    });
+  })();
+
+  // ---------- PiP (지원 브라우저에서만) ----------
+  if (document.pictureInPictureEnabled) {
+    $('pipBtn').style.display = 'inline-block';
+    $('pipBtn').onclick = async () => {
+      try { document.pictureInPictureElement ? await document.exitPictureInPicture() : await video.requestPictureInPicture(); }
+      catch (e) { msg('PiP를 사용할 수 없습니다: ' + e.message); }
+    };
+  }
+
+  // ---------- 백그라운드 전환 감지 ----------
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible') {
+      if (recording) {
+        const t = stream && stream.getVideoTracks()[0];
+        if (!t || t.readyState !== 'live') { msg('백그라운드 전환으로 카메라가 중단되어 녹화를 저장했습니다.', 0); stopRecording(); }
+        else if ($('keepAwake').checked) requestWake();
+      } else if (!stream) startCamera();
+    }
+  });
+
+  // ---------- PWA 설치 ----------
+  let deferredInstall = null;
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(()=>{});
+  if (!standalone) {
+    if (isIOS) $('installBtn').style.display = 'inline-block';   // iOS는 수동 설치 안내
+    window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; $('installBtn').style.display = 'inline-block'; });
+  }
+  window.addEventListener('appinstalled', () => { $('installBtn').style.display = 'none'; msg('앱이 설치되었습니다.'); });
+  $('installBtn').onclick = async () => {
+    if (deferredInstall) { deferredInstall.prompt(); await deferredInstall.userChoice; deferredInstall = null; $('installBtn').style.display = 'none'; }
+    else if (isIOS) msg('Safari 하단 공유 버튼(□↑) → "홈 화면에 추가"를 눌러주세요.', 7000);
+    else msg('브라우저 메뉴(⋮) → "앱 설치" 또는 "홈 화면에 추가"를 선택해주세요.', 7000);
+  };
+
+  // ---------- 이벤트 ----------
+  $('flipBtn').onclick = async () => { facing = facing === 'user' ? 'environment' : 'user'; await startCamera(); };
+  $('recBtn').onclick = () => recording ? stopRecording() : startRecording();
+  $('hideBtn').onclick = () => showCover(true);
+  $('quality').onchange = () => startCamera();
+  $('audio').onchange = () => startCamera();
+  window.addEventListener('beforeunload', e => { if (recording) { e.preventDefault(); e.returnValue = ''; } });
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showPerm('insecure'); $('startBtn').style.display = 'block';
+  } else { $('startBtn').style.display = 'block'; startCamera(); }
+  $('startBtn').onclick = () => navigator.mediaDevices ? startCamera() : showPerm('insecure');
+})();
+</script>
+</body>
+</html>
