@@ -26,6 +26,8 @@
   #hud { position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
   .pill { background:rgba(0,0,0,.55); padding:6px 12px; border-radius:20px; font-size:14px; font-variant-numeric:tabular-nums; display:flex; align-items:center; gap:6px; }
   .dot { width:10px; height:10px; border-radius:50%; background:var(--red); display:none; }
+  .rec #timerPill { background:var(--red); color:#fff; }
+  .rec #timerPill .dot { background:#fff; }
   .rec .dot { display:inline-block; animation:blink 1s infinite; }
   @keyframes blink { 50% { opacity:.2; } }
   #msg { position:absolute; left:12px; right:12px; bottom:12px; background:rgba(0,0,0,.7); padding:10px 14px; border-radius:12px; font-size:13px; line-height:1.4; display:none; }
@@ -260,6 +262,13 @@
     if (recording) { msg('카메라가 중단되어 녹화를 저장했습니다. (앱이 백그라운드로 가면 브라우저가 카메라를 끕니다)', 0); stopRecording(); }
   }
 
+  // 녹화 중 상단 표시: 상태바(theme-color)·탭 제목을 빨간색/● 로 변경
+  function setRecIndicator(on) {
+    const m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.content = on ? '#ff3b30' : '#000000';
+    document.title = on ? '● 녹화 중' : '카메라 녹화';
+  }
+
   // ---------- 녹화 ----------
   async function startRecording() {
     if (!stream) await startCamera();
@@ -273,7 +282,7 @@
     recorder.onstop = saveRecording;
     recorder.start(1000);
     recording = true; startedAt = Date.now();
-    document.body.classList.add('rec'); app.classList.add('rec');
+    document.body.classList.add('rec'); app.classList.add('rec'); setRecIndicator(true);
     $('flipBtn').disabled = true; $('quality').disabled = true; $('audio').disabled = true;
     $('hideBtn').disabled = false; $('miniBtn').disabled = false;
     tick = setInterval(() => $('timer').textContent = fmt(Math.floor((Date.now()-startedAt)/1000)), 250);
@@ -284,7 +293,7 @@
     recording = false;
     try { recorder.state !== 'inactive' && recorder.stop(); } catch {}
     clearInterval(tick);
-    document.body.classList.remove('rec'); app.classList.remove('rec');
+    document.body.classList.remove('rec'); app.classList.remove('rec'); setRecIndicator(false);
     $('flipBtn').disabled = false; $('quality').disabled = false; $('audio').disabled = false;
     $('hideBtn').disabled = true; $('miniBtn').disabled = true;
     showCover(false); setMini(false); releaseWake();
